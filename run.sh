@@ -20,6 +20,8 @@ sudo apt update
 sudo apt install -y ros-$CHOOSE_ROS_DISTRO-$INSTALL_PACKAGE
 sudo apt install -y python3-argcomplete
 sudo apt install -y python3-colcon-common-extensions
+sudo apt install -y python3-pip
+pip3 install setuptools==58.2.0
 if [ "$(lsb_release -cs)" = "bionic" ]; then
 	sudo apt install -y python-rosdep python3-vcstool # https://index.ros.org/doc/ros2/Installation/Linux-Development-Setup/
 else
