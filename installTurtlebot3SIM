@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Función para mostrar información al usuario
+function mostrar_informacion {
+    echo "----------------------------------------"
+    echo "$1"
+    echo "----------------------------------------"
+}
+
+# Verificar la instalación de un paquete
+function verificar_instalacion {
+    dpkg-query -W -f='${Status}' "$1" 2>/dev/null | grep -q "ok installed"
+}
+
+# Verificar la instalación de vcstool
+if verificar_instalacion "python3-vcstool"; then
+    mostrar_informacion "python3-vcstool ya está instalado. No se realizará la instalación."
+else
+    mostrar_informacion "Instalando python3-vcstool..."
+    sudo apt install -y python3-vcstool
+    mostrar_informacion "python3-vcstool instalado con éxito."
+fi
+
+# Lista de paquetes a instalar
+paquetes=("ros-humble-gazebo-*" "ros-humble-navigation2" "ros-humble-nav2-bringup" "ros-humble-slam-toolbox")
+
+# Instalar los paquetes
+instalados=0
+for paquete in "${paquetes[@]}"; do
+    if verificar_instalacion "$paquete"; then
+        mostrar_informacion "$paquete ya está instalado."
+    else
+        mostrar_informacion "Instalando $paquete..."
+        sudo apt install -y "$paquete"
+        mostrar_informacion "$paquete instalado con éxito."
+        instalados=1
+    fi
+done
+
+# Mostrar mensaje de finalización si se instalaron paquetes
+if [ $instalados -eq 1 ]; then
+    mostrar_informacion "El script ha finalizado correctamente de instalar paquetes"
+else
+    mostrar_informacion "No se instalaron nuevos paquetes. El script ha finalizado de instalar paquetes."
+fi
+
+# Instalar código de la simulación utilizando los paquetes anteriores
+mostrar_informacion "Crea el workspace" 
+
+directorio_destino=../turtlebot3_ws/src
+archivo_repos=turtlebot3.repos
+
+if [ ! -f "$archivo_repos" ]; then
+    mostrar_informacion "El archivo $archivo_repos no existe en el directorio actual."
+    exit 1
+fi
+
+mkdir -p "$directorio_destino"
+cp "$archivo_repos" "$directorio_destino/$archivo_repos"
+cd "$directorio_destino"
+
+vcs import . < "$archivo_repos"
+
+cd ..
+
+chmod 777 -R .
+
+
+colcon build --symlink-install
+
+
+
