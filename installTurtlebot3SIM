@@ -45,30 +45,3 @@ if [ $instalados -eq 1 ]; then
 else
     mostrar_informacion "No se instalaron nuevos paquetes. El script ha finalizado de instalar paquetes."
 fi
-
-# Instalar código de la simulación utilizando los paquetes anteriores
-mostrar_informacion "Crea el workspace" 
-
-directorio_destino=../turtlebot3_ws/src
-archivo_repos=turtlebot3.repos
-
-if [ ! -f "$archivo_repos" ]; then
-    mostrar_informacion "El archivo $archivo_repos no existe en el directorio actual."
-    exit 1
-fi
-
-mkdir -p "$directorio_destino"
-cp "$archivo_repos" "$directorio_destino/$archivo_repos"
-cd "$directorio_destino"
-
-vcs import . < "$archivo_repos"
-
-cd ..
-
-chmod 777 -R .
-
-
-colcon build --symlink-install
-
-
-
