@@ -28,15 +28,21 @@ vcs import . < "$archivo_repos"
 
 cd ..
 
+mostrar_informacion "Compila el paquete"
 chmod 777 -R .
 
 
 colcon build --symlink-install
 
-export COLCON_TRACE=0
-export AMENT_TRACE_SETUP_FILES=0
+mostrar_informacion "Exporta el Source de install y lo guarda en el bashrc"
+echo "source $HOME/turtlebot3_ws/install/setup.bash" >> "$HOME/.bashrc"
 
-source ./install/setup.bash
-export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/turtlebot3_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/models
-export TURTLEBOT3_MODEL=waffle_pi
-ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
+#Código de ejemplo para probar la instalación 
+
+#export COLCON_TRACE=0
+#export AMENT_TRACE_SETUP_FILES=0
+
+#source ./install/setup.bash
+#export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/turtlebot3_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/models
+#export TURTLEBOT3_MODEL=waffle_pi
+#ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
