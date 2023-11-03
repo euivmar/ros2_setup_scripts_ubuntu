@@ -24,7 +24,7 @@ else
 fi
 
 # Lista de paquetes a instalar
-paquetes=("ros-humble-gazebo-*" "ros-humble-navigation2" "ros-humble-nav2-bringup" "ros-humble-slam-toolbox" "ament-cmake-python" "ros-humble-tf-transformations")
+paquetes=("ros-humble-gazebo-*" "ros-humble-navigation2" "ros-humble-nav2-bringup" "ros-humble-slam-toolbox" "ament-cmake-python" "ros-humble-tf-transformations" "python3-transforms3d")
 
 # Instalar los paquetes
 instalados=0
